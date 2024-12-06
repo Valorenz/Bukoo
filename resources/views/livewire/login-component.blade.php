@@ -23,6 +23,8 @@
         <button type="button" wire:click="proses" class="btn btn-primary btn-login">Login</button>
     </form>
     <div class="text-center">
-        <a href="#">Forgot password?</a>
+        <a href="{{route('forgot-password')}}">Forgot password</a>
+        <div></div>
+        <a href="{{ route('register') }}">Register</a>
     </div>
 </div>
