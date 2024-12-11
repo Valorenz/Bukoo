@@ -1,7 +1,14 @@
+@php
+    $jenis = auth()->user()->jenis;
+@endphp
 <div>
     <div class="card">
         <div class="card-header">
+            @if ($jenis == 'admin')
             Kelola Buku
+            @elseif ($jenis == 'member')
+            List Buku
+            @endif
         </div>
         <div class="card-body">
             @if (session()->has('success'))
@@ -20,7 +27,9 @@
                             <th scope="col">Penulis</th>
                             <th scope="col">Penerbit</th>
                             <th scope="col">Tahun</th>
-                            <th>Proses</th>
+                            @if ($jenis == 'admin')
+                                <th>Proses</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -32,20 +41,24 @@
                                 <td>{{ $data->penulis }}</td>
                                 <td>{{ $data->penerbit }}</td>
                                 <td>{{ $data->tahun }}</td>
-                                <td>
-                                    <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
-                                        data-toggle="modal" data-target="#editPage">Ubah</a>
-                                    <a href="#" wire:click="confirm({{ $data->id }})"
-                                        class="btn btn-sm btn-danger" data-toggle="modal"
-                                        data-target="#deletePage">Hapus</a>
-                                </td>
+                                @if ($jenis == 'admin')
+                                    <td>
+                                        <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
+                                            data-toggle="modal" data-target="#editPage">Ubah</a>
+                                        <a href="#" wire:click="confirm({{ $data->id }})"
+                                            class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#deletePage">Hapus</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
                 {{ $buku->links() }}
             </div>
-            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addPage">Tambah</a>
+            @if ($jenis == 'admin')
+                <a wire:click="resetForm" class="btn btn-primary" data-toggle="modal" data-target="#addPage">Tambah</a>
+            @endif
         </div>
     </div>
     {{-- Tambah --}}
@@ -82,16 +95,14 @@
                         </div>
                         <div class="form-group">
                             <label>Penulis</label>
-                            <input type="text" class="form-control" wire:model="penulis"
-                                value="{{ @old('penulis') }}">
+                            <input type="text" class="form-control" wire:model="penulis" value="{{ @old('penulis') }}">
                             @error('penulis')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>Penerbit</label>
-                            <input type="text" class="form-control" wire:model="penerbit"
-                                value="{{ @old('penerbit') }}">
+                            <input type="text" class="form-control" wire:model="penerbit" value="{{ @old('penerbit') }}">
                             @error('penerbit')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -112,8 +123,7 @@
                         </div>
                         <div class="form-group">
                             <label>Jumlah</label>
-                            <input type="text" class="form-control" wire:model="jumlah"
-                                value="{{ @old('jumlah') }}">
+                            <input type="text" class="form-control" wire:model="jumlah" value="{{ @old('jumlah') }}">
                             @error('jumlah')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -142,8 +152,7 @@
                     <form>
                         <div class="form-group">
                             <label>Judul</label>
-                            <input type="text" class="form-control" wire:model="judul"
-                                value="{{ @old('judul') }}">
+                            <input type="text" class="form-control" wire:model="judul" value="{{ @old('judul') }}">
                             @error('judul')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -162,40 +171,35 @@
                         </div>
                         <div class="form-group">
                             <label>Penulis</label>
-                            <input type="text" class="form-control" wire:model="penulis"
-                                value="{{ @old('penulis') }}">
+                            <input type="text" class="form-control" wire:model="penulis" value="{{ @old('penulis') }}">
                             @error('penulis')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>Penerbit</label>
-                            <input type="text" class="form-control" wire:model="penerbit"
-                                value="{{ @old('penerbit') }}">
+                            <input type="text" class="form-control" wire:model="penerbit" value="{{ @old('penerbit') }}">
                             @error('penerbit')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>ISBN</label>
-                            <input type="text" class="form-control" wire:model="isbn"
-                                value="{{ @old('isbn') }}">
+                            <input type="text" class="form-control" wire:model="isbn" value="{{ @old('isbn') }}">
                             @error('isbn')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>Tahun</label>
-                            <input type="text" class="form-control" wire:model="tahun"
-                                value="{{ @old('tahun') }}">
+                            <input type="text" class="form-control" wire:model="tahun" value="{{ @old('tahun') }}">
                             @error('tahun')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>Jumlah</label>
-                            <input type="text" class="form-control" wire:model="jumlah"
-                                value="{{ @old('jumlah') }}">
+                            <input type="text" class="form-control" wire:model="jumlah" value="{{ @old('jumlah') }}">
                             @error('jumlah')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -225,8 +229,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" wire:click="destroy" class="btn btn-primary"
-                        data-dismiss="modal">Yes</button>
+                    <button type="button" wire:click="destroy" class="btn btn-primary" data-dismiss="modal">Yes</button>
                 </div>
             </div>
         </div>

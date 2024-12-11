@@ -17,7 +17,11 @@ class BukuComponent extends Component
     public function render()
     {
         if ($this->cari != '') {
-            $data['buku'] = Buku::where('judul', 'like', '%' . $this->cari . '%')->paginate(10);
+            $data['buku'] = Buku::where('judul', 'like', '%' . $this->cari . '%')
+                ->orWhere('penulis', 'like', '%' . $this->cari . '%')
+                ->orWhere('penerbit', 'like', '%' . $this->cari . '%')
+                ->orWhere('tahun', 'like', '%' . $this->cari . '%')
+                ->paginate(10);
         } else {
             $data['buku'] = Buku::paginate(10);
         }
@@ -58,6 +62,18 @@ class BukuComponent extends Component
         $this->reset();
         session()->flash('success', 'Berhasil Tambah!');
         return redirect()->route('buku');
+    }
+
+    public function resetForm()
+    {
+        $this->judul = '';
+        $this->kategori = '';
+        $this->penulis = '';
+        $this->penerbit = '';
+        $this->isbn = '';
+        $this->tahun = '';
+        $this->jumlah = '';
+        $this->id = null;
     }
 
     public function edit($id)

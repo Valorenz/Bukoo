@@ -37,7 +37,7 @@
                 </table>
                 {{ $kategori->links() }}
             </div>
-            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addPage">Tambah</a>
+            <a wire:click="resetForm" class="btn btn-primary" data-toggle="modal" data-target="#addPage">Tambah</a>
         </div>
     </div>
     {{-- Tambah --}}

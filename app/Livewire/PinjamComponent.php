@@ -50,6 +50,13 @@ class PinjamComponent extends Component
         return redirect()->route('pinjam');
     }
 
+    public function resetForm()
+    {
+        $this->buku = '';
+        $this->user = '';
+        $this->id = null;
+    }
+
     public function edit($id)
     {
         $pinjam = Pinjam::find($id);

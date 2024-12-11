@@ -42,6 +42,13 @@ class KategoriComponent extends Component
         return redirect()->route('kategori');
     }
 
+    public function resetForm()
+    {
+        $this->nama = '';
+        $this->deskripsi = '';
+        $this->id = null;
+    }
+
     public function edit($id)
     {
         $kategori = Kategori::find($id);

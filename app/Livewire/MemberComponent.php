@@ -16,8 +16,11 @@ class MemberComponent extends Component
     public function render()
     {
         if ($this->cari != "") {
-            $data['member'] = User::where('nama', 'like', '%' . $this->cari . '%')
-                ->orWhere('email', 'like', '%' . $this->cari . '%')
+            $data['member'] = User::where('jenis', 'member')
+                ->where(function ($query) {
+                    $query->where('nama', 'like', '%' . $this->cari . '%')
+                        ->orWhere('email', 'like', '%' . $this->cari . '%');
+                })
                 ->paginate(10);
         } else {
             $data['member'] = User::where('jenis', 'member')->paginate(10);
@@ -48,6 +51,15 @@ class MemberComponent extends Component
         ]);
         session()->flash('success', 'Berhasil Simpan!');
         return redirect()->route('member');
+    }
+
+    public function resetForm()
+    {
+        $this->nama = '';
+        $this->alamat = '';
+        $this->telepon = '';
+        $this->email = '';
+        $this->id = null;
     }
 
     public function edit($id)

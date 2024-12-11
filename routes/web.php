@@ -11,6 +11,9 @@ use App\Livewire\UserComponent;
 use App\Livewire\RegisterComponent;
 use App\Livewire\ForgotPasswordComponent;
 use App\Livewire\ResetPasswordComponent;
+use App\Livewire\ProfileComponent;
+
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +40,7 @@ Route::get('/register', RegisterComponent::class)->name('register');
 Route::get('/forgot-password', ForgotPasswordComponent::class)->name('forgot-password');
 
 Route::get('/reset-password/{email}', ResetPasswordComponent::class)->name('reset-password-form');
+
+Route::get('/profile', ProfileComponent::class)->name('profile')->middleware('auth');
+
+

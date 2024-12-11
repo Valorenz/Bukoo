@@ -18,11 +18,14 @@ class UserComponent extends Component
     {
         $layout['title'] = "Kelola User";
         if ($this->cari != "") {
-            $data['user'] = User::where('nama', 'like', '%' . $this->cari . '%')
-                ->orWhere('email', 'like', '%' . $this->cari . '%')
+            $data['admin'] = User::where('jenis', 'admin')
+                ->where(function ($query) {
+                    $query->where('nama', 'like', '%' . $this->cari . '%')
+                        ->orWhere('email', 'like', '%' . $this->cari . '%');
+                })
                 ->paginate(10);
         } else {
-            $data['user'] = User::paginate(10);
+            $data['admin'] = User::where('jenis', 'admin')->paginate(10);
         }
         return view('livewire.user-component', $data)->layoutData($layout);
     }
@@ -48,6 +51,14 @@ class UserComponent extends Component
         ]);
         session()->flash('success', 'Berhasil Simpan!');
         $this->reset();
+    }
+
+    public function resetForm()
+    {
+        $this->nama = '';
+        $this->email = '';
+        $this->password = '';
+        $this->id = null;
     }
 
     public function edit($id)
