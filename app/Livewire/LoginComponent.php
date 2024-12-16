@@ -8,6 +8,7 @@ use Livewire\Component;
 class LoginComponent extends Component
 {
     public $email, $password;
+    public $errorMessage; 
 
     public function render()
     {
@@ -16,33 +17,31 @@ class LoginComponent extends Component
 
     public function proses()
     {
+        // Validasi input
         $credential = $this->validate([
-            'email' => 'required',
-            'password' => 'required'
+            'email' => 'required|email',
+            'password' => 'required',
         ], [
             'email.required' => 'Email Tidak Boleh Kosong!',
-            'password.required' => 'Password Tidak Boleh Kosong!'
+            'password.required' => 'Password Tidak Boleh Kosong!',
+            'email.email' => 'Format Email Tidak Valid!',
         ]);
 
+        // Autentikasi
         if (Auth::attempt($credential)) {
             session()->regenerate();
-
             return redirect()->route('home');
         }
 
-        return back()->withErrors([
-            'email' => 'Autentikasi Gagal!',
-        ])->onlyInput('email');
+        // Jika gagal, set pesan error ke properti Livewire
+        $this->errorMessage = 'Autentikasi Gagal! Periksa kembali email dan password Anda.';
     }
 
     public function keluar()
     {
         Auth::logout();
-
         session()->invalidate();
-
         session()->regenerateToken();
-
         return redirect()->route('login');
     }
 }

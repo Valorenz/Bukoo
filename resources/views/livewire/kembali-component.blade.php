@@ -1,3 +1,7 @@
+@php
+    $jenis = auth()->user()->jenis;
+@endphp
+
 <div>
     <div class="card">
         <div class="card-header">
@@ -23,23 +27,21 @@
                     </thead>
                     <tbody>
                         @foreach ($pinjam as $data)
-                            <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{ $data->buku->judul }}</td>
-                                <td>{{ $data->user->nama }}</td>
-                                <td>{{ $data->tgl_pinjam }}</td>
-                                <td>{{ $data->tgl_kembali }}</td>
-                                <td>
-                                    <a href="#" wire:click="pilih({{ $data->id }})"
-                                        class="btn btn-sm btn-success" data-toggle="modal"
-                                        data-target="#pilih">Pilih</a>
-                                    {{-- <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
-                                        data-toggle="modal" data-target="#editPage">Ubah</a>
-                                    <a href="#" wire:click="confirm({{ $data->id }})"
-                                        class="btn btn-sm btn-danger" data-toggle="modal"
-                                        data-target="#deletePage">Hapus</a> --}}
-                                </td>
-                            </tr>
+                            {{-- Admin dapat melihat semua data, Member hanya melihat datanya sendiri --}}
+                            @if ($jenis === 'admin' || ($jenis === 'member' && $data->user && $data->user->id === auth()->user()->id))
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $data->buku->judul }}</td>
+                                    <td>{{ $data->user->nama }}</td>
+                                    <td>{{ $data->tgl_pinjam }}</td>
+                                    <td>{{ $data->tgl_kembali }}</td>
+                                    <td>
+                                        <a href="#" wire:click="pilih({{ $data->id }})"
+                                            class="btn btn-sm btn-success" data-toggle="modal"
+                                            data-target="#pilih">Pilih</a>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -69,12 +71,15 @@
                     </thead>
                     <tbody>
                         @foreach ($pengembalian as $data)
-                            <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{ $data->pinjam_id }}</td>
-                                <td>{{ $data->tgl_kembali }}</td>
-                                <td>{{ $data->denda }}</td>
-                            </tr>
+                            {{-- Admin dapat melihat semua data, Member hanya melihat datanya sendiri --}}
+                            @if ($jenis === 'admin' || ($jenis === 'member' && $data->pinjam && $data->pinjam->user->id === auth()->user()->id))
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $data->pinjam_id }}</td>
+                                    <td>{{ $data->tgl_kembali }}</td>
+                                    <td>{{ $data->denda }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

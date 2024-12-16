@@ -119,4 +119,6 @@ class BukuComponent extends Component
         session()->flash('success', 'Berhasil Hapus!');
         return redirect()->route('buku');
     }
+
+    
 }

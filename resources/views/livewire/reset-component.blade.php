@@ -3,7 +3,7 @@
         <img src="{{ asset('assets/login.png') }}" alt="Library Logo">
         <h2>Reset Password</h2>
     </div>
-    <form>
+    <form wire:submit.prevent="resetPassword">
         <div class="form-group">
             <input type="password" wire:model="password" class="form-control" placeholder="New Password">
             @error('password')
@@ -20,6 +20,6 @@
                 </div>
             @enderror
         </div>
-        <button type="button" wire:click="resetPassword" class="btn btn-primary btn-login">Reset Password</button>
+        <button type="submit" class="btn btn-primary btn-login">Reset Password</button>
     </form>
 </div>

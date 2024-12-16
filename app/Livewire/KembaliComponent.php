@@ -17,11 +17,26 @@ class KembaliComponent extends Component
 
     public function render()
     {
+        $user = auth()->user(); // Mendapatkan data pengguna yang sedang login
+        
+        if ($user->jenis === 'admin') {
+            // Admin melihat semua data peminjaman dan pengembalian
+            $data['pinjam'] = Pinjam::where('status', 'pinjam')->paginate(10);
+            $data['pengembalian'] = Pengembalian::paginate(10);
+        } else {
+            // Member hanya melihat data peminjaman dan pengembalian yang terkait dirinya
+            $data['pinjam'] = Pinjam::where('status', 'pinjam')
+                ->where('user_id', $user->id)
+                ->paginate(10);
+            $data['pengembalian'] = Pengembalian::whereHas('pinjam', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->paginate(10);
+        }
+    
         $layout['title'] = 'Pengembalian Buku';
-        $data['pinjam'] = Pinjam::where('status', 'pinjam')->paginate(10);
-        $data['pengembalian'] = Pengembalian::paginate(10);
         return view('livewire.kembali-component', $data)->layoutData($layout);
     }
+    
 
     public function pilih($id)
     {

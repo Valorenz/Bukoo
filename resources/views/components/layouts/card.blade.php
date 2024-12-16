@@ -1,7 +1,12 @@
+@php
+    $jenis = auth()->user()->jenis;
+    $user = auth()->user();
+@endphp
+
 <div id="dashboard" class="mb-4">
     <h2>Overview</h2>
     <div class="row">
-        <div class="col-md-3">
+   <div class="col-md-3">
             <a href="{{ route('member') }}" class="card text-white bg-primary mb-3" style="text-decoration: none;">
                 <div class="card-header">
                     <span data-feather="users" class="mr-2"></span> Members
@@ -40,8 +45,8 @@
                     <span data-feather="clock" class="mr-2"></span> Returns
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Overdue: {{ $kembali }}</h5>
-                    <p class="card-text">Overdue Books</p>
+                    <h5 class="card-title">Returned: {{ $kembali }}</h5>
+                    <p class="card-text">Returned Books</p>
                 </div>
             </a>
         </div>

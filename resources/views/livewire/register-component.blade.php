@@ -3,7 +3,7 @@
         <img src="{{ asset('assets/login.png') }}" alt="Library Logo">
         <h2>Register Bukoo</h2>
     </div>
-    <form>
+    <form wire:submit.prevent="register">
         <div class="form-group">
             <input type="text" wire:model="nama" class="form-control" id="nama" placeholder="Nama Lengkap">
             @error('nama')
@@ -52,6 +52,6 @@
                 </div>
             @enderror
         </div>
-        <button type="button" wire:click="register" class="btn btn-primary btn-login">Register</button>
+        <button type="submit" class="btn btn-primary btn-login">Register</button>
     </form>
 </div>

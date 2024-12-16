@@ -1,3 +1,7 @@
+@php
+    $jenis = auth()->user()->jenis;
+@endphp
+
 <div>
     <div class="card">
         <div class="card-header">
@@ -19,7 +23,9 @@
                             <th scope="col">Tanggal Pinjam</th>
                             <th scope="col">Tanggal Kembali</th>
                             <th scope="col">Status</th>
-                            <th>Proses</th>
+                            @if ($jenis === 'admin')
+                                <th>Proses</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -31,13 +37,15 @@
                                 <td>{{ $data->tgl_pinjam }}</td>
                                 <td>{{ $data->tgl_kembali }}</td>
                                 <td>{{ $data->status }}</td>
-                                <td>
-                                    <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
-                                        data-toggle="modal" data-target="#editPage">Ubah</a>
-                                    <a href="#" wire:click="confirm({{ $data->id }})"
-                                        class="btn btn-sm btn-danger" data-toggle="modal"
-                                        data-target="#deletePage">Hapus</a>
-                                </td>
+                                @if ($jenis === 'admin')
+                                    <td>
+                                        <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
+                                            data-toggle="modal" data-target="#editPage">Ubah</a>
+                                        <a href="#" wire:click="confirm({{ $data->id }})"
+                                            class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#deletePage">Hapus</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -74,12 +82,17 @@
                         </div>
                         <div class="form-group">
                             <label>Member</label>
-                            <select wire:model="user" class="form-control">
-                                <option value="">--Pilih--</option>
-                                @foreach ($member as $data)
-                                    <option value="{{ $data->id }}">{{ $data->nama }}</option>
-                                @endforeach
-                            </select>
+                            @if ($jenis === 'admin')
+                                <select wire:model="user" class="form-control">
+                                    <option value="">--Pilih Member--</option>
+                                    @foreach ($members as $member)
+                                        <option value="{{ $member->id }}">{{ $member->nama }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="form-control" value="{{ auth()->user()->nama }}" disabled>
+                                <input type="hidden" wire:model="user" value="{{ auth()->user()->id }}">
+                            @endif
                             @error('user')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -120,12 +133,17 @@
                         </div>
                         <div class="form-group">
                             <label>Member</label>
-                            <select wire:model="user" class="form-control">
-                                <option value="">--Pilih--</option>
-                                @foreach ($member as $data)
-                                    <option value="{{ $data->id }}">{{ $data->nama }}</option>
-                                @endforeach
-                            </select>
+                            @if ($jenis === 'admin')
+                                <select wire:model="user" class="form-control">
+                                    <option value="">--Pilih Member--</option>
+                                    @foreach ($members as $member)
+                                        <option value="{{ $member->id }}">{{ $member->nama }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="form-control" value="{{ auth()->user()->nama }}" disabled>
+                                <input type="hidden" wire:model="user" value="{{ auth()->user()->id }}">
+                            @endif
                             @error('user')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror

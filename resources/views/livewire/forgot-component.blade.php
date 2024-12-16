@@ -3,7 +3,7 @@
         <img src="{{ asset('assets/login.png') }}" alt="Library Logo">
         <h2>Forgot Password</h2>
     </div>
-    <form>
+    <form wire:submit.prevent="verifyUser">
         <div class="form-group">
             <input type="text" wire:model="email" class="form-control" placeholder="Enter Your Email">
             @error('email')
@@ -28,7 +28,7 @@
                 </div>
             @enderror
         </div>
-        <button type="button" wire:click="verifyUser" class="btn btn-primary btn-login">Verify</button>
+        <button type="submit" class="btn btn-primary btn-login">Verify</button> 
     </form>
     <div class="text-center">
         <a href="{{ route('login') }}">Back to Login</a>

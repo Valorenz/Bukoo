@@ -15,13 +15,13 @@ class Pinjam extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'buku_id', 'user_id', 'tgl_pinjam', 'tgl_kembali', 'status'];
 
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function buku(): BelongsTo
+    
+    public function buku()
     {
-        return $this->belongsTo(Buku::class);
+        return $this->belongsTo(Buku::class, 'buku_id');
     }
 }

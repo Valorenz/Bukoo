@@ -49,13 +49,6 @@
                         Manage Categories
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('user') ? 'active-menu' : '' }} text-white"
-                        href="{{ route('user') }}">
-                        <span data-feather="user"></span>
-                        Manage Staff
-                    </a>
-                </li>
             @elseif ($jenis === 'member')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::routeIs('member') ? 'active-menu' : '' }} text-white"
