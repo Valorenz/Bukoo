@@ -1,12 +1,13 @@
 @php
-    $jenis = auth()->user()->jenis;
-    $user = auth()->user();
+$jenis = auth()->user()->jenis;
+$user = auth()->user();
 @endphp
 
 <div id="dashboard" class="mb-4">
     <h2>Overview</h2>
     <div class="row">
-   <div class="col-md-3">
+        @if ($jenis == 'admin')
+        <div class="col-md-3">
             <a href="{{ route('member') }}" class="card text-white bg-primary mb-3" style="text-decoration: none;">
                 <div class="card-header">
                     <span data-feather="users" class="mr-2"></span> Members
@@ -17,7 +18,8 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
+        @endif
+        <div class="<?= ($jenis == 'admin' ? ("col-md-3") : ("col-md-4")) ?>">
             <a href="{{ route('buku') }}" class="card text-white bg-success mb-3" style="text-decoration: none;">
                 <div class="card-header">
                     <span data-feather="book" class="mr-2"></span> Books
@@ -28,7 +30,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
+        <div class="<?= ($jenis == 'admin' ? ("col-md-3") : ("col-md-4")) ?>">
             <a href="{{ route('pinjam') }}" class="card text-white bg-warning mb-3" style="text-decoration: none;">
                 <div class="card-header">
                     <span data-feather="file-text" class="mr-2"></span> Loans
@@ -39,7 +41,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
+        <div class="<?= ($jenis == 'admin' ? ("col-md-3") : ("col-md-4")) ?>">
             <a href="{{ route('kembali') }}" class="card text-white bg-danger mb-3" style="text-decoration: none;">
                 <div class="card-header">
                     <span data-feather="clock" class="mr-2"></span> Returns
