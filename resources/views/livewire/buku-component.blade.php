@@ -75,6 +75,10 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
+                            <label>Cari Buku dari Google</label>
+                            <input type="text" wire:model="searchQuery" wire:keydown.enter="searchBook" class="form-control" placeholder="Masukkan judul atau ISBN...">
+                        </div>
+                        <div class="form-group">
                             <label>Judul</label>
                             <input type="text" class="form-control" wire:model="judul" value="{{ @old('judul') }}">
                             @error('judul')

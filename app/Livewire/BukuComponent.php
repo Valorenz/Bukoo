@@ -7,6 +7,8 @@ use App\Models\Kategori;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Http;
+
 
 class BukuComponent extends Component
 {
@@ -119,6 +121,32 @@ class BukuComponent extends Component
         session()->flash('success', 'Berhasil Hapus!');
         return redirect()->route('buku');
     }
+
+
+public $searchQuery;
+
+public function searchBook()
+{
+    $response = Http::get('https://www.googleapis.com/books/v1/volumes', [
+        'q' => $this->searchQuery
+    ]);
+
+    $books = $response->json()['items'] ?? [];
+
+    if (count($books) > 0) {
+        $book = $books[0]['volumeInfo'];
+
+        $this->judul = $book['title'] ?? '';
+        $this->penulis = implode(', ', $book['authors'] ?? []);
+        $this->penerbit = $book['publisher'] ?? '';
+        $this->tahun = isset($book['publishedDate']) ? substr($book['publishedDate'], 0, 4) : '';
+        $this->isbn = collect($book['industryIdentifiers'] ?? [])
+                        ->firstWhere('type', 'ISBN_13')['identifier'] ?? '';
+    } else {
+        session()->flash('error', 'Buku tidak ditemukan.');
+    }
+}
+
 
     
 }
